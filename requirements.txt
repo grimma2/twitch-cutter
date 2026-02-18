@@ -1,0 +1,14 @@
+# Обязательно для Twitch Cutter
+streamlink>=6.0.0
+requests>=2.32.0
+python-dotenv>=1.0.0
+google-api-python-client>=2.160.0
+google-auth-oauthlib>=1.2.0
+google-auth-httplib2>=0.2.0
+
+# Для PUBLISH_MODE=dropbox
+dropbox>=11.36.0
+
+# По желанию
+yt-dlp>=2024.1.0
+vcsi>=6.0.0

@@ -1,0 +1,9 @@
+venv/
+data/
+downloads/
+LiveStreamDVR/
+.env
+__pychache__/
+nginx.conf
+*.json
+login_opus.js
