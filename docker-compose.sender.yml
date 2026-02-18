@@ -1,0 +1,34 @@
+# Twitch Cutter Sender: слушает VODs (webhook/poll) и отправляет в Opus API
+# Перед запуском: создайте ./state/, положите youtube_client_secret.json и youtube_token.json
+# Webhook URL для LivestreamDVR: http://<host>:8090/webhook/livestreamdvr
+services:
+  sender:
+    build: .
+    container_name: twitch_cutter_sender
+    ports:
+      - "8090:8090"
+    volumes:
+      # VODs from twitchautomator / LivestreamDVR (data/storage/vods/channel/file.ts)
+      - ./data:/data
+      # Persist processed state and YouTube tokens
+      - ./state:/app/state
+      # Reuse existing OAuth files from repository root
+      - ./youtube_client_secret.json:/app/state/youtube_client_secret.json:ro
+      - ./youtube_token.json:/app/state/youtube_token.json
+      # Persist downloaded clips (optional, useful for debugging)
+      - ./downloads:/app/downloads
+    environment:
+      - RUN_ONCE=false
+      - TRIGGER_MODE=webhook
+      - WEBHOOK_HOST=0.0.0.0
+      - WEBHOOK_PORT=8090
+      - WEBHOOK_PATH=/webhook/livestreamdvr
+      - WATCH_DIR=/data/storage/vods
+      - PROCESSED_STATE_FILE=/app/state/processed_vods.json
+      - SOURCE_PATH_REWRITE_FROM=/usr/local/share/twitchautomator/data
+      - SOURCE_PATH_REWRITE_TO=/data
+      - YT_CLIENT_SECRET_FILE=/app/state/youtube_client_secret.json
+      - YT_TOKEN_FILE=/app/state/youtube_token.json
+      - YT_PRIVACY_STATUS=public
+    env_file:
+      - .env

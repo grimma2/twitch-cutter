@@ -163,7 +163,7 @@ class Settings:
                 os.getenv("YT_CLIENT_SECRET_FILE", "./youtube_client_secret.json")
             ).resolve(),
             yt_token_file=Path(os.getenv("YT_TOKEN_FILE", "./youtube_token.json")).resolve(),
-            yt_privacy_status=os.getenv("YT_PRIVACY_STATUS", "unlisted"),
+            yt_privacy_status=os.getenv("YT_PRIVACY_STATUS", "public"),
             yt_category_id=os.getenv("YT_CATEGORY_ID", "22"),
             yt_title_prefix=os.getenv("YT_TITLE_PREFIX", "Short clip"),
             yt_default_tags=yt_tags,
@@ -486,8 +486,6 @@ def build_yt_text(clip: Dict[str, Any], settings: Settings, default_idx: int) ->
         description_parts.append(str(clip["description"]).strip())
     if clip.get("hashtags"):
         description_parts.append(str(clip["hashtags"]).strip())
-    if clip.get("uriForPreview"):
-        description_parts.append(f"Source clip: {clip['uriForPreview']}")
     description = "\n\n".join([p for p in description_parts if p])
     return title, description
 
